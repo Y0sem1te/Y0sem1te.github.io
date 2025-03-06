@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>ML1: Regression</title>
+    <title>HW1: Regression</title>
     <url>/2025/03/05/ML1-Regression/</url>
     <content><![CDATA[<h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><p>Now we have a dataset consisting of 40 one-hot vectors representing 40 different states in the US, and the ratio of people who have 18 different features over the past 3 days, with the last line representing the ratio of people who have COVID-19. And we have a testing dataset similar to the last one, but without the ratio. Our goal is to predict the ratio as accurately as possible.</p>
 <ul>
