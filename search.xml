@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2025/02/11/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+    <title>ML1: Regression</title>
+    <url>/2025/03/05/ML1-Regression/</url>
+    <content><![CDATA[<h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><p>Now we have a dataset consisting of 40 one-hot vectors representing 40 different states in the US, and the ratio of people who have 18 different features over the past 3 days, with the last line representing the ratio of people who have COVID-19. And we have a testing dataset similar to the last one, but without the ratio. Our goal is to predict the ratio as accurately as possible.</p>
+<ul>
+<li>COVID-19 daily cases prediction</li>
+<li>Training data: 2700 samples</li>
+<li>Testing data: 893 samples</li>
+<li>Evaluation metric: Root Mean Squared Error (RMSE)</li>
+</ul>
+<h1 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h1><p>Boss baseline score: 0.86181</p>
+<p>Strong baseline score: 1.05728</p>
+<p>Medium baseline score: 1.49430</p>
+<p>Simple baseline score: 2.28371</p>
+<h1 id="Method："><a href="#Method：" class="headerlink" title="Method："></a>Method：</h1><h2 id="Network-description"><a href="#Network-description" class="headerlink" title="Network description:"></a>Network description:</h2><p>We can use a DNN to solve the problem. It’s easy to pass the simple and medium baselines. We design the network with two linear layers, each consisting of a linear layer, LeakyReLU activation, Batch Normalization, and Dropout. At the end of the network, we use a linear layer to output a 1-dimensional vector which represents the result.</p>
+<h2 id="Network-Full-design"><a href="#Network-Full-design" class="headerlink" title="Network Full design:"></a>Network Full design:</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">self</span>.layers = nn.Sequential(</span><br><span class="line">            nn.Linear(input_dim, <span class="number">64</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.01</span>),</span><br><span class="line">            nn.BatchNorm1d(<span class="number">64</span>),</span><br><span class="line">            nn.Dropout(<span class="number">0.1</span>),</span><br><span class="line">            </span><br><span class="line">            nn.Linear(<span class="number">64</span>, <span class="number">16</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.01</span>),</span><br><span class="line">            nn.BatchNorm1d(<span class="number">16</span>),</span><br><span class="line">            nn.Dropout(<span class="number">0.1</span>),</span><br><span class="line">            </span><br><span class="line">            nn.Linear(<span class="number">16</span>, <span class="number">1</span>)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h2 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets:"></a>Datasets:</h2><p>To deal with the datasets, we need to drop the first dimension of the datasets, the ‘id’ column, which is meaningless. After removing it and training again, we can pass the strong baseline.</p>
+<p>But if we continue to add epochs, like up to 4000, it doesn’t work. We can only reach about 0.95 loss. If we want to pass the boss baseline, we should add more data. But how? I notice there are 4 days of data, so we can separate the datasets by day and use two day’s dataset as one training sample. This way, we have four times the amount of data. By trying this and expanding the number of epochs, we can reach 0.85 loss, which just satisfies the boss baseline. </p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>I completed this task last year, but I’m posting it now, so some codes might be missing. But luckily, this task is easy, so I think you can write the right code by yourself. If I were to give the code, it would likely be in my GitHub repo.</p>
 ]]></content>
+      <categories>
+        <category>Hong-Yi HW</category>
+        <category>DNN</category>
+      </categories>
+      <tags>
+        <tag>Machine Learning</tag>
+        <tag>Deep Learning</tag>
+      </tags>
   </entry>
 </search>
