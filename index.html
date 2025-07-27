@@ -306,6 +306,201 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://y0sem1te.github.io/2025/07/27/The-backpropagation-of-matrix-multiply/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Perso  n">
+      <meta itemprop="name" content="Y0sem1te">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/icons8-icon-100.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Y0sem1te">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/07/27/The-backpropagation-of-matrix-multiply/" itemprop="url">The backpropagation of matrix multiply</a></h1>
+        
+
+        <div class="post-meta">
+          
+
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2025-07-27T16:41:33+08:00">
+                2025-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CPlusTorch/" itemprop="url" rel="index">
+                    <span itemprop="name">CPlusTorch</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CPlusTorch/DNN/" itemprop="url" rel="index">
+                    <span itemprop="name">DNN</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  337
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="The-backpropagation-of-matrix-multiply"><a href="#The-backpropagation-of-matrix-multiply" class="headerlink" title="The backpropagation of matrix multiply"></a>The backpropagation of matrix multiply</h2><p>  This week, I tried to manipulate matrix multiplication in my project and encountered a question about how to perform backpropagation through matrix multiplication.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A @ B = C</span><br></pre></td></tr></table></figure>
+
+<p>The matrix multiplication can be expressed as A @ B. In the past, I’ve implemented per-element matrix addition and multiplication, and they’re easy to backpropagate through. When it came to matrix multiplication (@), it became quite confusing. I searched the internet and found two formula.</p>
+<p>​																			∂L&#x2F;∂A &#x3D; (∂L&#x2F;∂C) × Bᵀ</p>
+<p>​																			∂L&#x2F;∂B &#x3D; Aᵀ × (∂L&#x2F;∂C)</p>
+<p>It’s easy to derive these formulas, but today my topic is not how to derive these two formulas, I want to share some of my understanding of backpropagation through implementing these functions.</p>
+<h2 id="The-backward-in-the-calculation"><a href="#The-backward-in-the-calculation" class="headerlink" title="The backward in the calculation"></a>The backward in the calculation</h2><p>  Most people consider L(loss) as a scalar, which is true. So the original derivative of the formula above, dL&#x2F;dA, is turned into a scalar for each element in tensor A. But this has nothing to do with the backward implementation in PyTorch.</p>
+<p>  In the backward pass, the original purpose is to maximize&#x2F;minimize the parent tensor. In addition and element-wise multiplication, each element only affects the corresponding location element in the result tensor, so the gradient is only related to a specific element in the result matrix. When it becomes matrix multiplication, each element becomes related to all elements in the same row of the result matrix. To achieve maximization&#x2F;minimization of the entire matrix, gradients from all related positions must be calculated, which is why a different formula appears.</p>
+<p>  We all know that the loss function will spread the gradient to each signal variety, but setting aside the continuously multiplying gradients, if we look at each step individually each step of backpropagation has nothing to do with the terminal loss function, which is merely a scalar signal. The essence of backward propagation is to maximize&#x2F;minimize the entire tensor - specifically, the sum of all elements in the tensor.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://y0sem1te.github.io/2025/03/05/ML1-Regression/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Perso  n">
@@ -545,7 +740,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -556,7 +751,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -634,7 +829,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">395</span>
+    <span title="Site words total count">732</span>
   
 </div>
 
