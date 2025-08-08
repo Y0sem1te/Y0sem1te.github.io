@@ -404,7 +404,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  337
+                  343
                 </span>
               
 
@@ -443,16 +443,49 @@
       
         
           
-            <h2 id="The-backpropagation-of-matrix-multiply"><a href="#The-backpropagation-of-matrix-multiply" class="headerlink" title="The backpropagation of matrix multiply"></a>The backpropagation of matrix multiply</h2><p>  This week, I tried to manipulate matrix multiplication in my project and encountered a question about how to perform backpropagation through matrix multiplication.</p>
+            <h2 id="the-backpropagation-of-matrix-multiply">The backpropagation of
+matrix multiply</h2>
+<p>This week, I tried to manipulate matrix multiplication in my project
+and encountered a question about how to perform backpropagation through
+matrix multiplication.</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A @ B = C</span><br></pre></td></tr></table></figure>
-
-<p>The matrix multiplication can be expressed as A @ B. In the past, I’ve implemented per-element matrix addition and multiplication, and they’re easy to backpropagate through. When it came to matrix multiplication (@), it became quite confusing. I searched the internet and found two formula.</p>
-<p>​																			∂L&#x2F;∂A &#x3D; (∂L&#x2F;∂C) × Bᵀ</p>
-<p>​																			∂L&#x2F;∂B &#x3D; Aᵀ × (∂L&#x2F;∂C)</p>
-<p>It’s easy to derive these formulas, but today my topic is not how to derive these two formulas, I want to share some of my understanding of backpropagation through implementing these functions.</p>
-<h2 id="The-backward-in-the-calculation"><a href="#The-backward-in-the-calculation" class="headerlink" title="The backward in the calculation"></a>The backward in the calculation</h2><p>  Most people consider L(loss) as a scalar, which is true. So the original derivative of the formula above, dL&#x2F;dA, is turned into a scalar for each element in tensor A. But this has nothing to do with the backward implementation in PyTorch.</p>
-<p>  In the backward pass, the original purpose is to maximize&#x2F;minimize the parent tensor. In addition and element-wise multiplication, each element only affects the corresponding location element in the result tensor, so the gradient is only related to a specific element in the result matrix. When it becomes matrix multiplication, each element becomes related to all elements in the same row of the result matrix. To achieve maximization&#x2F;minimization of the entire matrix, gradients from all related positions must be calculated, which is why a different formula appears.</p>
-<p>  We all know that the loss function will spread the gradient to each signal variety, but setting aside the continuously multiplying gradients, if we look at each step individually each step of backpropagation has nothing to do with the terminal loss function, which is merely a scalar signal. The essence of backward propagation is to maximize&#x2F;minimize the entire tensor - specifically, the sum of all elements in the tensor.</p>
+<p>The matrix multiplication can be expressed as A @ B. In the past,
+I’ve implemented per-element matrix addition and multiplication, and
+they’re easy to backpropagate through. When it came to matrix
+multiplication (@), it became quite confusing. I searched the internet
+and found two formula.</p>
+<p>​<br />
+<span class="math display">$$
+\frac{\partial L}{\partial A} = \frac{\partial L}{\partial C} \cdot B^T
+$$</span></p>
+<p><span class="math display">$$
+\frac{\partial L}{\partial B} = A^T \cdot \frac{\partial L}{\partial C}
+$$</span></p>
+<p>It’s easy to derive these formulas, but today my topic is not how to
+derive these two formulas, I want to share some of my understanding of
+backpropagation through implementing these functions.</p>
+<h2 id="the-backward-in-the-calculation">The backward in the
+calculation</h2>
+<p>Most people consider L(loss) as a scalar, which is true. So the
+original derivative of the formula above, dL/dA, is turned into a scalar
+for each element in tensor A. But this has nothing to do with the
+backward implementation in PyTorch.</p>
+<p>In the backward pass, the original purpose is to maximize/minimize
+the parent tensor. In addition and element-wise multiplication, each
+element only affects the corresponding location element in the result
+tensor, so the gradient is only related to a specific element in the
+result matrix. When it becomes matrix multiplication, each element
+becomes related to all elements in the same row of the result matrix. To
+achieve maximization/minimization of the entire matrix, gradients from
+all related positions must be calculated, which is why a different
+formula appears.</p>
+<p>We all know that the loss function will spread the gradient to each
+signal variety, but setting aside the continuously multiplying
+gradients, if we look at each step individually each step of
+backpropagation has nothing to do with the terminal loss function, which
+is merely a scalar signal. The essence of backward propagation is to
+maximize/minimize the entire tensor - specifically, the sum of all
+elements in the tensor.</p>
 
           
         
@@ -599,7 +632,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  395
+                  398
                 </span>
               
 
@@ -638,23 +671,49 @@
       
         
           
-            <h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><p>Now we have a dataset consisting of 40 one-hot vectors representing 40 different states in the US, and the ratio of people who have 18 different features over the past 3 days, with the last line representing the ratio of people who have COVID-19. And we have a testing dataset similar to the last one, but without the ratio. Our goal is to predict the ratio as accurately as possible.</p>
+            <h1 id="description">Description</h1>
+<p>Now we have a dataset consisting of 40 one-hot vectors representing
+40 different states in the US, and the ratio of people who have 18
+different features over the past 3 days, with the last line representing
+the ratio of people who have COVID-19. And we have a testing dataset
+similar to the last one, but without the ratio. Our goal is to predict
+the ratio as accurately as possible.</p>
 <ul>
 <li>COVID-19 daily cases prediction</li>
 <li>Training data: 2700 samples</li>
 <li>Testing data: 893 samples</li>
 <li>Evaluation metric: Root Mean Squared Error (RMSE)</li>
 </ul>
-<h1 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h1><p>Boss baseline score: 0.86181</p>
+<h1 id="grading">Grading</h1>
+<p>Boss baseline score: 0.86181</p>
 <p>Strong baseline score: 1.05728</p>
 <p>Medium baseline score: 1.49430</p>
 <p>Simple baseline score: 2.28371</p>
-<h1 id="Method："><a href="#Method：" class="headerlink" title="Method："></a>Method：</h1><h2 id="Network-description"><a href="#Network-description" class="headerlink" title="Network description:"></a>Network description:</h2><p>We can use a DNN to solve the problem. It’s easy to pass the simple and medium baselines. We design the network with two linear layers, each consisting of a linear layer, LeakyReLU activation, Batch Normalization, and Dropout. At the end of the network, we use a linear layer to output a 1-dimensional vector which represents the result.</p>
-<h2 id="Network-Full-design"><a href="#Network-Full-design" class="headerlink" title="Network Full design:"></a>Network Full design:</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">self</span>.layers = nn.Sequential(</span><br><span class="line">            nn.Linear(input_dim, <span class="number">64</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.01</span>),</span><br><span class="line">            nn.BatchNorm1d(<span class="number">64</span>),</span><br><span class="line">            nn.Dropout(<span class="number">0.1</span>),</span><br><span class="line">            </span><br><span class="line">            nn.Linear(<span class="number">64</span>, <span class="number">16</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.01</span>),</span><br><span class="line">            nn.BatchNorm1d(<span class="number">16</span>),</span><br><span class="line">            nn.Dropout(<span class="number">0.1</span>),</span><br><span class="line">            </span><br><span class="line">            nn.Linear(<span class="number">16</span>, <span class="number">1</span>)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
-
-<h2 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets:"></a>Datasets:</h2><p>To deal with the datasets, we need to drop the first dimension of the datasets, the ‘id’ column, which is meaningless. After removing it and training again, we can pass the strong baseline.</p>
-<p>But if we continue to add epochs, like up to 4000, it doesn’t work. We can only reach about 0.95 loss. If we want to pass the boss baseline, we should add more data. But how? I notice there are 4 days of data, so we can separate the datasets by day and use two day’s dataset as one training sample. This way, we have four times the amount of data. By trying this and expanding the number of epochs, we can reach 0.85 loss, which just satisfies the boss baseline. </p>
-<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>I completed this task last year, but I’m posting it now, so some codes might be missing. But luckily, this task is easy, so I think you can write the right code by yourself. If I were to give the code, it would likely be in my GitHub repo.</p>
+<h1 id="method">Method：</h1>
+<h2 id="network-description">Network description:</h2>
+<p>We can use a DNN to solve the problem. It’s easy to pass the simple
+and medium baselines. We design the network with two linear layers, each
+consisting of a linear layer, LeakyReLU activation, Batch Normalization,
+and Dropout. At the end of the network, we use a linear layer to output
+a 1-dimensional vector which represents the result.</p>
+<h2 id="network-full-design">Network Full design:</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">self</span>.layers = nn.Sequential(</span><br><span class="line">            nn.Linear(input_dim, <span class="number">64</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.01</span>),</span><br><span class="line">            nn.BatchNorm1d(<span class="number">64</span>),</span><br><span class="line">            nn.Dropout(<span class="number">0.1</span>),</span><br><span class="line">            </span><br><span class="line">            nn.Linear(<span class="number">64</span>, <span class="number">16</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.01</span>),</span><br><span class="line">            nn.BatchNorm1d(<span class="number">16</span>),</span><br><span class="line">            nn.Dropout(<span class="number">0.1</span>),</span><br><span class="line">            </span><br><span class="line">            nn.Linear(<span class="number">16</span>, <span class="number">1</span>)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<h2 id="datasets">Datasets:</h2>
+<p>To deal with the datasets, we need to drop the first dimension of the
+datasets, the ‘id’ column, which is meaningless. After removing it and
+training again, we can pass the strong baseline.</p>
+<p>But if we continue to add epochs, like up to 4000, it doesn’t work.
+We can only reach about 0.95 loss. If we want to pass the boss baseline,
+we should add more data. But how? I notice there are 4 days of data, so
+we can separate the datasets by day and use two day’s dataset as one
+training sample. This way, we have four times the amount of data. By
+trying this and expanding the number of epochs, we can reach 0.85 loss,
+which just satisfies the boss baseline.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>I completed this task last year, but I’m posting it now, so some
+codes might be missing. But luckily, this task is easy, so I think you
+can write the right code by yourself. If I were to give the code, it
+would likely be in my GitHub repo.</p>
 
           
         
@@ -829,7 +888,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">732</span>
+    <span title="Site words total count">741</span>
   
 </div>
 
@@ -1382,6 +1441,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 

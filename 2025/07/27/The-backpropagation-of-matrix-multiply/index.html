@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="The backpropagation of matrix multiply  This week, I tried to manipulate matrix multiplication in my project and encountered a question about how to perform backpropagation through matrix multiplicati">
+<meta name="description" content="The backpropagation of matrix multiply This week, I tried to manipulate matrix multiplication in my project and encountered a question about how to perform backpropagation through matrix multiplic">
 <meta property="og:type" content="article">
 <meta property="og:title" content="The backpropagation of matrix multiply">
 <meta property="og:url" content="https://y0sem1te.github.io/2025/07/27/The-backpropagation-of-matrix-multiply/index.html">
 <meta property="og:site_name" content="Y0sem1te">
-<meta property="og:description" content="The backpropagation of matrix multiply  This week, I tried to manipulate matrix multiplication in my project and encountered a question about how to perform backpropagation through matrix multiplicati">
+<meta property="og:description" content="The backpropagation of matrix multiply This week, I tried to manipulate matrix multiplication in my project and encountered a question about how to perform backpropagation through matrix multiplic">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-07-27T08:41:33.000Z">
-<meta property="article:modified_time" content="2025-07-27T10:57:17.529Z">
+<meta property="article:modified_time" content="2025-08-08T14:55:57.592Z">
 <meta property="article:author" content="Sui">
 <meta property="article:tag" content="Machine Learning">
 <meta property="article:tag" content="Deep Learning">
@@ -404,7 +404,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  337
+                  343
                 </span>
               
 
@@ -441,16 +441,49 @@
       
 
       
-        <h2 id="The-backpropagation-of-matrix-multiply"><a href="#The-backpropagation-of-matrix-multiply" class="headerlink" title="The backpropagation of matrix multiply"></a>The backpropagation of matrix multiply</h2><p>  This week, I tried to manipulate matrix multiplication in my project and encountered a question about how to perform backpropagation through matrix multiplication.</p>
+        <h2 id="the-backpropagation-of-matrix-multiply">The backpropagation of
+matrix multiply</h2>
+<p>This week, I tried to manipulate matrix multiplication in my project
+and encountered a question about how to perform backpropagation through
+matrix multiplication.</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A @ B = C</span><br></pre></td></tr></table></figure>
-
-<p>The matrix multiplication can be expressed as A @ B. In the past, I’ve implemented per-element matrix addition and multiplication, and they’re easy to backpropagate through. When it came to matrix multiplication (@), it became quite confusing. I searched the internet and found two formula.</p>
-<p>​																			∂L&#x2F;∂A &#x3D; (∂L&#x2F;∂C) × Bᵀ</p>
-<p>​																			∂L&#x2F;∂B &#x3D; Aᵀ × (∂L&#x2F;∂C)</p>
-<p>It’s easy to derive these formulas, but today my topic is not how to derive these two formulas, I want to share some of my understanding of backpropagation through implementing these functions.</p>
-<h2 id="The-backward-in-the-calculation"><a href="#The-backward-in-the-calculation" class="headerlink" title="The backward in the calculation"></a>The backward in the calculation</h2><p>  Most people consider L(loss) as a scalar, which is true. So the original derivative of the formula above, dL&#x2F;dA, is turned into a scalar for each element in tensor A. But this has nothing to do with the backward implementation in PyTorch.</p>
-<p>  In the backward pass, the original purpose is to maximize&#x2F;minimize the parent tensor. In addition and element-wise multiplication, each element only affects the corresponding location element in the result tensor, so the gradient is only related to a specific element in the result matrix. When it becomes matrix multiplication, each element becomes related to all elements in the same row of the result matrix. To achieve maximization&#x2F;minimization of the entire matrix, gradients from all related positions must be calculated, which is why a different formula appears.</p>
-<p>  We all know that the loss function will spread the gradient to each signal variety, but setting aside the continuously multiplying gradients, if we look at each step individually each step of backpropagation has nothing to do with the terminal loss function, which is merely a scalar signal. The essence of backward propagation is to maximize&#x2F;minimize the entire tensor - specifically, the sum of all elements in the tensor.</p>
+<p>The matrix multiplication can be expressed as A @ B. In the past,
+I’ve implemented per-element matrix addition and multiplication, and
+they’re easy to backpropagate through. When it came to matrix
+multiplication (@), it became quite confusing. I searched the internet
+and found two formula.</p>
+<p>​<br />
+<span class="math display">$$
+\frac{\partial L}{\partial A} = \frac{\partial L}{\partial C} \cdot B^T
+$$</span></p>
+<p><span class="math display">$$
+\frac{\partial L}{\partial B} = A^T \cdot \frac{\partial L}{\partial C}
+$$</span></p>
+<p>It’s easy to derive these formulas, but today my topic is not how to
+derive these two formulas, I want to share some of my understanding of
+backpropagation through implementing these functions.</p>
+<h2 id="the-backward-in-the-calculation">The backward in the
+calculation</h2>
+<p>Most people consider L(loss) as a scalar, which is true. So the
+original derivative of the formula above, dL/dA, is turned into a scalar
+for each element in tensor A. But this has nothing to do with the
+backward implementation in PyTorch.</p>
+<p>In the backward pass, the original purpose is to maximize/minimize
+the parent tensor. In addition and element-wise multiplication, each
+element only affects the corresponding location element in the result
+tensor, so the gradient is only related to a specific element in the
+result matrix. When it becomes matrix multiplication, each element
+becomes related to all elements in the same row of the result matrix. To
+achieve maximization/minimization of the entire matrix, gradients from
+all related positions must be calculated, which is why a different
+formula appears.</p>
+<p>We all know that the loss function will spread the gradient to each
+signal variety, but setting aside the continuously multiplying
+gradients, if we look at each step individually each step of
+backpropagation has nothing to do with the terminal loss function, which
+is merely a scalar signal. The essence of backward propagation is to
+maximize/minimize the entire tensor - specifically, the sum of all
+elements in the tensor.</p>
 
       
     </div>
@@ -658,7 +691,9 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#The-backpropagation-of-matrix-multiply"><span class="nav-number">1.</span> <span class="nav-text">The backpropagation of matrix multiply</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-backward-in-the-calculation"><span class="nav-number">2.</span> <span class="nav-text">The backward in the calculation</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#the-backpropagation-of-matrix-multiply"><span class="nav-number">1.</span> <span class="nav-text">The backpropagation of
+matrix multiply</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-backward-in-the-calculation"><span class="nav-number">2.</span> <span class="nav-text">The backward in the
+calculation</span></a></li></ol></div>
             
 
           </div>
@@ -692,7 +727,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">732</span>
+    <span title="Site words total count">741</span>
   
 </div>
 
@@ -1249,6 +1284,8 @@
   
 
   
+  
+
 
   
 
